@@ -1,0 +1,29 @@
+
+import os
+import shutil
+
+# Define the directory containing the files
+source_directory = r'C:\path\to\your\source'
+# Define the destination directory
+destination_directory = r'C:\path\to\your\directory'
+
+# Create the destination directory if it doesn't exist
+if not os.path.exists(destination_directory):
+    os.makedirs(destination_directory)
+
+# Iterate over all files in the source directory
+for filename in os.listdir(source_directory):
+    if filename.endswith(".xml"):
+        # Get the first 6 characters of the filename
+        prefix = filename[:6]
+        
+        # Create a new directory for the prefix if it doesn't exist
+        prefix_directory = os.path.join(destination_directory, prefix)
+        if not os.path.exists(prefix_directory):
+            os.makedirs(prefix_directory)
+        
+        # Move the file to the new directory
+        shutil.move(os.path.join(source_directory, filename), os.path.join(prefix_directory, filename))
+        print(f"Moved {filename} to {prefix_directory}")
+
+print("Files have been moved and organized into folders.")
