@@ -1,0 +1,37 @@
+import os
+import shutil
+import pandas as pd
+
+# Define the path to the spreadsheet
+spreadsheet_path = r'C:\path\to\your\spreadsheet.xlsx'
+
+# Define the directory containing the files
+source_directory = r'C:\path\to\your\source\directory'
+
+# Define the destination directory
+destination_directory = r'C:\destination\to\your\folder'
+
+# Read the spreadsheet
+df = pd.read_excel(spreadsheet_path)
+
+# Assuming the spreadsheet has a column named 'Operator' and 'Filename'
+for index, row in df.iterrows():
+    operator = row['ScannerOperator']
+    filename = row['ScanNumber']
+    
+    # Create the directory for the operator if it doesn't exist
+    operator_directory = os.path.join(destination_directory, operator)
+    if not os.path.exists(operator_directory):
+        os.makedirs(operator_directory)
+    
+    # Move the file to the new directory
+    source_file_path = os.path.join(source_directory, filename)
+    destination_file_path = os.path.join(operator_directory, filename)
+    
+    if os.path.exists(source_file_path):
+        shutil.move(source_file_path, destination_file_path)
+        print(f"Moved {filename} to {operator_directory}")
+    else:
+        print(f"File {filename} not found in source directory")
+
+print("Files have been moved and organized into folders.")
